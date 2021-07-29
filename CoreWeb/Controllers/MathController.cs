@@ -14,6 +14,7 @@ namespace CoreWeb.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+
     /// <summary>
     /// 計算機的controller
     /// </summary>
@@ -23,12 +24,20 @@ namespace CoreWeb.Controllers
         /// 計算機的cache, 會有所有用家的caldata
         /// </summary>
         private readonly IMemoryCache cache;
-        CalData caldata = new CalData();
+
+        /// <summary>
+        /// 建構子, 每次使用都會存取memorycache
+        /// </summary>
+        /// <param name="_memoryCache">系統的memorycache</param>
         public MathController(IMemoryCache _memoryCache)
         {
             this.cache = _memoryCache;
         }
 
+        /// <summary>
+        /// 當用家用get時會跳出提示
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public string Get()
         {

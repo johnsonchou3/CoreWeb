@@ -15,6 +15,11 @@ namespace CoreWeb
         public string Value { get; set; }
 
         /// <summary>
+        /// 節點值的權重
+        /// </summary>
+        public int Associativity { get; set; }
+
+        /// <summary>
         /// 左邊Children的節點
         /// </summary>
         public Node Left { get; set; }
@@ -23,8 +28,6 @@ namespace CoreWeb
         /// 右邊Children的節點
         /// </summary>
         public Node Right { get; set; }
-
-        public int Associativity { get; set; }
 
         /// <summary>
         /// Constructor
@@ -46,6 +49,11 @@ namespace CoreWeb
             {
                 Associativity = 0;
             }
+            else
+            {
+                //Is Digit
+                Associativity = -1;
+            }
         }
 
         /// <summary>
@@ -57,62 +65,57 @@ namespace CoreWeb
         /// <returns></returns>
         public static Node CreateTree(List<string> Expressionlist)
         {
-            Stack<Node> StackNode = new Stack<Node>();
-            Stack<string> StackString = new Stack<string>();
+            Stack<Node> StackNodeTree = new Stack<Node>();
+            Stack<Node> StackNodeString = new Stack<Node>();
             Node t;
             Node t1;
             Node t2;
-            Dictionary<string, int> AssociativityMap = new Dictionary<string, int>();
-            AssociativityMap.Add("+", 1);
-            AssociativityMap.Add("-", 1);
-            AssociativityMap.Add("*", 2);
-            AssociativityMap.Add("/", 2);
-            AssociativityMap.Add(")", 0);
+            Node t3;
             Expressionlist.Insert(0, "(");
             Expressionlist.Add(")");
             foreach (string oper in Expressionlist)
             {
+                t3 = new Node(oper);
                 if (oper == "(")
                 {
-                    StackString.Push(oper);
+                    StackNodeString.Push(t3);
                 }
-                else if (!AssociativityMap.ContainsKey(oper))
+                else if (t3.Associativity == -1)
                 {
-                    t = new Node(oper);
-                    StackNode.Push(t);
+                    StackNodeTree.Push(t3);
                 }
-                else if (AssociativityMap[oper] > 0)
+                else if (t3.Associativity > 0)
                 {
-                    while (StackString.Count != 0 && StackString.Peek() != "("
-                        && AssociativityMap[StackString.Peek()] >= AssociativityMap[oper])
+                    while (StackNodeString.Peek().Value != "(" && StackNodeString.Peek().Associativity >= t3.Associativity)
                     {
-                        t = new Node(StackString.Pop());
-                        t1 = StackNode.Pop();
-                        t2 = StackNode.Pop();
+                        t = StackNodeString.Pop();
+                        t1 = StackNodeTree.Pop();
+                        t2 = StackNodeTree.Pop();
                         t.Left = t2;
                         t.Right = t1;
-                        StackNode.Push(t);
+                        StackNodeTree.Push(t);
                     }
-                    StackString.Push(oper);
+                    StackNodeString.Push(t3);
                 }
                 else if (oper == ")")
                 {
-                    while (StackString.Count != 0 && StackString.Peek() != "(")
+                    while (StackNodeString.Peek().Value != "(")
                     {
-                        t = new Node(StackString.Peek());
-                        StackString.Pop();
-                        t1 = StackNode.Peek();
-                        StackNode.Pop();
-                        t2 = StackNode.Peek();
-                        StackNode.Pop();
+                        //前面的再把它弄成樹(括號內)
+                        t = StackNodeString.Peek();
+                        StackNodeString.Pop();
+                        t1 = StackNodeTree.Peek();
+                        StackNodeTree.Pop();
+                        t2 = StackNodeTree.Peek();
+                        StackNodeTree.Pop();
                         t.Left = t2;
                         t.Right = t1;
-                        StackNode.Push(t);
+                        StackNodeTree.Push(t);
                     }
-                    StackString.Pop();
+                    StackNodeString.Pop();
                 }
             }
-            t = StackNode.Peek();
+            t = StackNodeTree.Peek();
             return t;
         }
     }

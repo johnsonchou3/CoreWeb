@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace CoreWeb
 {
+    /// <summary>
+    /// 每個用家的計算機數據, 在每個request 都會回傳給用家
+    /// </summary>
     public class CalData
     {
         /// <summary>
