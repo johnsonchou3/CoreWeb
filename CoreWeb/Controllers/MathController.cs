@@ -9,6 +9,7 @@ using System.Runtime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using System.Threading;
 
 namespace CoreWeb.Controllers
 {
@@ -50,9 +51,8 @@ namespace CoreWeb.Controllers
         /// <param name="btnnum">數字鍵本身的值</param>
         /// <returns>回傳新的caldata</returns>
         [HttpPost("Numpad")]
-        public CalData Numpad(string btnnum)
+        public IActionResult Numpad(string btnnum)
         {
-            //string Idkey = Request.Cookies[CookieHandler.Id].ToString();
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
             {
@@ -60,11 +60,12 @@ namespace CoreWeb.Controllers
             }
             Response.Cookies.Append("ID", Idkey);
             CalData caldata;
+            var a = cache.Get(Idkey);
             caldata = cache.GetOrCreate(Idkey, entry => new CalData());
             caldata.IsOperating = false;
             AddNum();
             caldata.StoretoDisplay();
-            return caldata;
+            return Ok(caldata);
 
             // 把按鍵值加到TempInputString最後
             void AddNum()
@@ -76,6 +77,7 @@ namespace CoreWeb.Controllers
                 }
                 catch (FormatException)
                 {
+                    //tempinputstring = null 會出現, 這時候讓tempinputstring = 數字鍵
                     caldata.TempInputString = btnnum;
                 }
             }
@@ -87,7 +89,7 @@ namespace CoreWeb.Controllers
         /// <param name="btnop">使用鍵本身的值</param>
         /// <returns>回傳新的caldata</returns>
         [HttpPost("Operation")]
-        public CalData Operation(string btnop)
+        public IActionResult Operation(string btnop)
         {
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
@@ -117,7 +119,7 @@ namespace CoreWeb.Controllers
                 }
             }
             caldata.StoretoDisplay();
-            return caldata;
+            return Ok(caldata);
 
             // 把TempInputString及目前的operator寫入StringOfOperation中
             void SaveValue()
@@ -139,7 +141,7 @@ namespace CoreWeb.Controllers
         /// </summary>
         /// <returns>回傳新的caldata</returns>
         [HttpPost("Execute")]
-        public CalData Execute()
+        public IActionResult Execute()
         {
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
@@ -154,18 +156,26 @@ namespace CoreWeb.Controllers
                 SaveValue();
                 caldata.IsAfterBracket = false;
             }
-            Node ExpTree = Node.CreateTree(caldata.Expressionlist);
-            caldata.Preordstring = "Pre-Order: \n";
-            caldata.Inordstring = "In-Order: \n";
-            caldata.Postordstring = "Post-Order: \n";
-            GetPreorder(ExpTree);
-            GetInorder(ExpTree);
-            GetPostorder(ExpTree);
-            caldata.TempInputString = GetResult(ExpTree).ToString();
-            caldata.DisplayOperation = caldata.StringOfOperation;
-            caldata.StringOfOperation = string.Empty;
-            caldata.Expressionlist.Clear();
-            return caldata;
+            try
+            {
+                Node ExpTree = Node.CreateTree(caldata.Expressionlist);
+                caldata.Preordstring = "Pre-Order: \n";
+                caldata.Inordstring = "In-Order: \n";
+                caldata.Postordstring = "Post-Order: \n";
+                GetPreorder(ExpTree);
+                GetInorder(ExpTree);
+                GetPostorder(ExpTree);
+                caldata.TempInputString = GetResult(ExpTree).ToString();
+                caldata.DisplayOperation = caldata.StringOfOperation;
+                caldata.StringOfOperation = string.Empty;
+                caldata.Expressionlist.Clear();
+                caldata.IsAfterBracket = false;
+                return Ok(caldata);
+            }
+            catch
+            {
+                return BadRequest("Input Error, please clear all and try again");
+            }
 
             // 把目前輸入值加進運算式中
             void SaveValue()
@@ -234,7 +244,7 @@ namespace CoreWeb.Controllers
         /// </summary>
         /// <returns>回傳新的caldata</returns>
         [HttpPost("Root")]
-        public CalData Root()
+        public IActionResult Root()
         {
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
@@ -246,7 +256,7 @@ namespace CoreWeb.Controllers
             caldata = cache.GetOrCreate(Idkey, entry => new CalData());
             double tempnum = double.Parse(caldata.TempInputString);
             caldata.TempInputString = Math.Sqrt(tempnum).ToString();
-            return caldata;
+            return Ok(caldata);
         }
 
         /// <summary>
@@ -254,7 +264,7 @@ namespace CoreWeb.Controllers
         /// </summary>
         /// <returns>回傳新的caldata</returns>
         [HttpPost("ClearEntry")]
-        public CalData ClearEntry()
+        public IActionResult ClearEntry()
         {
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
@@ -265,7 +275,7 @@ namespace CoreWeb.Controllers
             CalData caldata;
             caldata = cache.GetOrCreate(Idkey, entry => new CalData());
             caldata.TempInputString = "0";
-            return caldata;
+            return Ok(caldata);
         }
 
         /// <summary>
@@ -273,7 +283,7 @@ namespace CoreWeb.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("ClearAll")]
-        public CalData ClearAll()
+        public IActionResult ClearAll()
         {
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
@@ -283,10 +293,11 @@ namespace CoreWeb.Controllers
             Response.Cookies.Append("ID", Idkey);
             CalData caldata;
             caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+            caldata.IsAfterBracket = false;
             caldata.TempInputString = "0";
             ClearDatas();
             caldata.StoretoDisplay();
-            return caldata;
+            return Ok(caldata);
 
             void ClearDatas()
             {
@@ -300,7 +311,7 @@ namespace CoreWeb.Controllers
         /// </summary>
         /// <returns>回傳新的caldata</returns>
         [HttpPost("Dec")]
-        public CalData Dec()
+        public IActionResult Dec()
         {
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
@@ -311,7 +322,7 @@ namespace CoreWeb.Controllers
             CalData caldata;
             caldata = cache.GetOrCreate(Idkey, entry => new CalData());
             caldata.TempInputString += ".";
-            return caldata;
+            return Ok(caldata);
         }
 
         /// <summary>
@@ -319,7 +330,7 @@ namespace CoreWeb.Controllers
         /// </summary>
         /// <returns>回傳新的caldata</returns>
         [HttpPost("PosNeg")]
-        public CalData PosNeg()
+        public IActionResult PosNeg()
         {
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
@@ -330,7 +341,7 @@ namespace CoreWeb.Controllers
             CalData caldata;
             caldata = cache.GetOrCreate(Idkey, entry => new CalData());
             SwitchPosNeg();
-            return caldata;
+            return Ok(caldata);
 
             void SwitchPosNeg()
             {
@@ -345,8 +356,7 @@ namespace CoreWeb.Controllers
         /// </summary>
         /// <returns>回傳新的caldata</returns>
         [HttpPost("Backspace")]
-
-        public CalData Backspace()
+        public IActionResult Backspace()
         {
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
@@ -364,7 +374,7 @@ namespace CoreWeb.Controllers
             {
                 caldata.TempInputString = "0";
             }
-            return caldata;
+            return Ok(caldata);
 
             void RemoveLastDigit()
             {
@@ -379,8 +389,7 @@ namespace CoreWeb.Controllers
         /// <param name="bracket">使用按鍵本身括號值</param>
         /// <returns>回傳新的caldata</returns>
         [HttpPost("BracketOp")]
-
-        public CalData BracketOp(string bracket)
+        public IActionResult BracketOp(string bracket)
         {
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
@@ -393,7 +402,7 @@ namespace CoreWeb.Controllers
             caldata.Expressionlist.Add(bracket);
             caldata.StringOfOperation += bracket;
             caldata.StoretoDisplay();
-            return caldata;
+            return Ok(caldata);
         }
 
         /// <summary>
@@ -402,8 +411,7 @@ namespace CoreWeb.Controllers
         /// <param name="bracket">使用按鍵本身括號值</param>
         /// <returns>回傳新的caldata</returns>
         [HttpPost("BracketClose")]
-
-        public CalData BracketClose(string bracket)
+        public IActionResult BracketClose(string bracket)
         {
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
@@ -420,7 +428,7 @@ namespace CoreWeb.Controllers
             caldata.StoretoDisplay();
             caldata.TempInputString = "0";
             caldata.IsAfterBracket = true;
-            return caldata;
+            return Ok(caldata);
         }
     }
 }

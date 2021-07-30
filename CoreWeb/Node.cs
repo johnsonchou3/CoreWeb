@@ -33,27 +33,11 @@ namespace CoreWeb
         /// Constructor
         /// </summary>
         /// <param name="c">節點本身的值(operand/operator)</param>
-        public Node(string c)
+        public Node(Expression c)
         {
-            Value = c;
+            Value = c.value;
             Left = Right = null;
-            if (c == "+" || c == "-")
-            {
-                Associativity = 1;
-            }
-            else if (c == "*" || c == "/")
-            {
-                Associativity = 2;
-            }
-            else if (c == ")")
-            {
-                Associativity = 0;
-            }
-            else
-            {
-                //Is Digit
-                Associativity = -1;
-            }
+            Associativity = c.GetAssociativity();
         }
 
         /// <summary>
@@ -75,7 +59,26 @@ namespace CoreWeb
             Expressionlist.Add(")");
             foreach (string oper in Expressionlist)
             {
-                t3 = new Node(oper);
+                if (oper == "*" || oper == "/")
+                {
+                    MultDiv exp = new MultDiv(oper);
+                    t3 = new Node(exp);
+                }
+                else if (oper == "+" || oper == "-")
+                {
+                    AddSub exp = new AddSub(oper);
+                    t3 = new Node(exp);
+                }
+                else if (oper == ")")
+                {
+                    CloseBrac exp = new CloseBrac(oper);
+                    t3 = new Node(exp);
+                }
+                else
+                {
+                    Number exp = new Number(oper);
+                    t3 = new Node(exp);
+                }
                 if (oper == "(")
                 {
                     StackNodeString.Push(t3);

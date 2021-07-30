@@ -1,56 +1,10 @@
 <stylecopresultscache>
   <version>12</version>
-  <sourcecode name="Node.cs" parser="StyleCop.CSharp.CsParser">
-    <timestamps>
-      <styleCop>2021/07/27 10:52:19.882</styleCop>
-      <settingsFile>2020/10/22 14:22:10.902</settingsFile>
-      <sourceFile>2021/07/29 10:19:37.734</sourceFile>
-      <parser>2021/07/27 10:52:19.882</parser>
-      <StyleCop.CSharp.DocumentationRules>2021/07/27 10:52:19.882</StyleCop.CSharp.DocumentationRules>
-      <StyleCop.CSharp.DocumentationRules.FilesHashCode>1693754956</StyleCop.CSharp.DocumentationRules.FilesHashCode>
-      <StyleCop.CSharp.LayoutRules>2021/07/27 10:52:19.882</StyleCop.CSharp.LayoutRules>
-      <StyleCop.CSharp.LayoutRules.FilesHashCode>0</StyleCop.CSharp.LayoutRules.FilesHashCode>
-      <StyleCop.CSharp.MaintainabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.MaintainabilityRules>
-      <StyleCop.CSharp.MaintainabilityRules.FilesHashCode>0</StyleCop.CSharp.MaintainabilityRules.FilesHashCode>
-      <StyleCop.CSharp.NamingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.NamingRules>
-      <StyleCop.CSharp.NamingRules.FilesHashCode>0</StyleCop.CSharp.NamingRules.FilesHashCode>
-      <StyleCop.CSharp.OrderingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.OrderingRules>
-      <StyleCop.CSharp.OrderingRules.FilesHashCode>0</StyleCop.CSharp.OrderingRules.FilesHashCode>
-      <StyleCop.CSharp.ReadabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.ReadabilityRules>
-      <StyleCop.CSharp.ReadabilityRules.FilesHashCode>0</StyleCop.CSharp.ReadabilityRules.FilesHashCode>
-      <StyleCop.CSharp.SpacingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.SpacingRules>
-      <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
-    </timestamps>
-    <violations />
-  </sourcecode>
   <sourcecode name="CalData.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2021/07/27 10:52:19.882</styleCop>
       <settingsFile>2020/10/22 14:22:10.902</settingsFile>
       <sourceFile>2021/07/29 10:20:29.821</sourceFile>
-      <parser>2021/07/27 10:52:19.882</parser>
-      <StyleCop.CSharp.DocumentationRules>2021/07/27 10:52:19.882</StyleCop.CSharp.DocumentationRules>
-      <StyleCop.CSharp.DocumentationRules.FilesHashCode>1693754956</StyleCop.CSharp.DocumentationRules.FilesHashCode>
-      <StyleCop.CSharp.LayoutRules>2021/07/27 10:52:19.882</StyleCop.CSharp.LayoutRules>
-      <StyleCop.CSharp.LayoutRules.FilesHashCode>0</StyleCop.CSharp.LayoutRules.FilesHashCode>
-      <StyleCop.CSharp.MaintainabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.MaintainabilityRules>
-      <StyleCop.CSharp.MaintainabilityRules.FilesHashCode>0</StyleCop.CSharp.MaintainabilityRules.FilesHashCode>
-      <StyleCop.CSharp.NamingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.NamingRules>
-      <StyleCop.CSharp.NamingRules.FilesHashCode>0</StyleCop.CSharp.NamingRules.FilesHashCode>
-      <StyleCop.CSharp.OrderingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.OrderingRules>
-      <StyleCop.CSharp.OrderingRules.FilesHashCode>0</StyleCop.CSharp.OrderingRules.FilesHashCode>
-      <StyleCop.CSharp.ReadabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.ReadabilityRules>
-      <StyleCop.CSharp.ReadabilityRules.FilesHashCode>0</StyleCop.CSharp.ReadabilityRules.FilesHashCode>
-      <StyleCop.CSharp.SpacingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.SpacingRules>
-      <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
-    </timestamps>
-    <violations />
-  </sourcecode>
-  <sourcecode name="MathController.cs" parser="StyleCop.CSharp.CsParser">
-    <timestamps>
-      <styleCop>2021/07/27 10:52:19.882</styleCop>
-      <settingsFile>2020/10/22 14:22:10.902</settingsFile>
-      <sourceFile>2021/07/29 10:22:38.534</sourceFile>
       <parser>2021/07/27 10:52:19.882</parser>
       <StyleCop.CSharp.DocumentationRules>2021/07/27 10:52:19.882</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1693754956</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -92,10 +46,6 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <project key="-753912112">
-    <configuration>
-    </configuration>
-  </project>
   <sourcecode name="Startup.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2021/07/27 10:52:19.882</styleCop>
@@ -118,5 +68,285 @@
       <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
     </timestamps>
     <violations />
+  </sourcecode>
+  <sourcecode name="CloseBrac.cs" parser="StyleCop.CSharp.CsParser">
+    <timestamps>
+      <styleCop>2021/07/27 10:52:19.882</styleCop>
+      <settingsFile>2020/10/22 14:22:10.902</settingsFile>
+      <sourceFile>2021/07/29 16:26:09.332</sourceFile>
+      <parser>2021/07/27 10:52:19.882</parser>
+      <StyleCop.CSharp.DocumentationRules>2021/07/27 10:52:19.882</StyleCop.CSharp.DocumentationRules>
+      <StyleCop.CSharp.DocumentationRules.FilesHashCode>1693754956</StyleCop.CSharp.DocumentationRules.FilesHashCode>
+      <StyleCop.CSharp.LayoutRules>2021/07/27 10:52:19.882</StyleCop.CSharp.LayoutRules>
+      <StyleCop.CSharp.LayoutRules.FilesHashCode>0</StyleCop.CSharp.LayoutRules.FilesHashCode>
+      <StyleCop.CSharp.MaintainabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.MaintainabilityRules>
+      <StyleCop.CSharp.MaintainabilityRules.FilesHashCode>0</StyleCop.CSharp.MaintainabilityRules.FilesHashCode>
+      <StyleCop.CSharp.NamingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.NamingRules>
+      <StyleCop.CSharp.NamingRules.FilesHashCode>0</StyleCop.CSharp.NamingRules.FilesHashCode>
+      <StyleCop.CSharp.OrderingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.OrderingRules>
+      <StyleCop.CSharp.OrderingRules.FilesHashCode>0</StyleCop.CSharp.OrderingRules.FilesHashCode>
+      <StyleCop.CSharp.ReadabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.ReadabilityRules>
+      <StyleCop.CSharp.ReadabilityRules.FilesHashCode>0</StyleCop.CSharp.ReadabilityRules.FilesHashCode>
+      <StyleCop.CSharp.SpacingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.SpacingRules>
+      <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
+    </timestamps>
+    <violations>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The class must have a documentation header.</context>
+        <line>8</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The constructor must have a documentation header.</context>
+        <line>10</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>13</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="ElementsMustBeSeparatedByBlankLine" ruleCheckId="SA1516">
+        <context>Adjacent elements must be separated by a blank line.</context>
+        <line>13</line>
+        <warning>False</warning>
+      </violation>
+    </violations>
+  </sourcecode>
+  <sourcecode name="Expression.cs" parser="StyleCop.CSharp.CsParser">
+    <timestamps>
+      <styleCop>2021/07/27 10:52:19.882</styleCop>
+      <settingsFile>2020/10/22 14:22:10.902</settingsFile>
+      <sourceFile>2021/07/29 16:38:23.214</sourceFile>
+      <parser>2021/07/27 10:52:19.882</parser>
+      <StyleCop.CSharp.DocumentationRules>2021/07/27 10:52:19.882</StyleCop.CSharp.DocumentationRules>
+      <StyleCop.CSharp.DocumentationRules.FilesHashCode>1693754956</StyleCop.CSharp.DocumentationRules.FilesHashCode>
+      <StyleCop.CSharp.LayoutRules>2021/07/27 10:52:19.882</StyleCop.CSharp.LayoutRules>
+      <StyleCop.CSharp.LayoutRules.FilesHashCode>0</StyleCop.CSharp.LayoutRules.FilesHashCode>
+      <StyleCop.CSharp.MaintainabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.MaintainabilityRules>
+      <StyleCop.CSharp.MaintainabilityRules.FilesHashCode>0</StyleCop.CSharp.MaintainabilityRules.FilesHashCode>
+      <StyleCop.CSharp.NamingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.NamingRules>
+      <StyleCop.CSharp.NamingRules.FilesHashCode>0</StyleCop.CSharp.NamingRules.FilesHashCode>
+      <StyleCop.CSharp.OrderingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.OrderingRules>
+      <StyleCop.CSharp.OrderingRules.FilesHashCode>0</StyleCop.CSharp.OrderingRules.FilesHashCode>
+      <StyleCop.CSharp.ReadabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.ReadabilityRules>
+      <StyleCop.CSharp.ReadabilityRules.FilesHashCode>0</StyleCop.CSharp.ReadabilityRules.FilesHashCode>
+      <StyleCop.CSharp.SpacingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.SpacingRules>
+      <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
+    </timestamps>
+    <violations>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The class must have a documentation header.</context>
+        <line>8</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The property must have a documentation header.</context>
+        <line>10</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="ElementMustBeginWithUpperCaseLetter" ruleCheckId="SA1300">
+        <context>property names begin with an upper-case letter: value.</context>
+        <line>10</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The constructor must have a documentation header.</context>
+        <line>11</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="ElementsMustBeSeparatedByBlankLine" ruleCheckId="SA1516">
+        <context>Adjacent elements must be separated by a blank line.</context>
+        <line>11</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>15</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="ElementsMustBeSeparatedByBlankLine" ruleCheckId="SA1516">
+        <context>Adjacent elements must be separated by a blank line.</context>
+        <line>15</line>
+        <warning>False</warning>
+      </violation>
+    </violations>
+  </sourcecode>
+  <sourcecode name="MultDiv.cs" parser="StyleCop.CSharp.CsParser">
+    <timestamps>
+      <styleCop>2021/07/27 10:52:19.882</styleCop>
+      <settingsFile>2020/10/22 14:22:10.902</settingsFile>
+      <sourceFile>2021/07/29 16:38:23.210</sourceFile>
+      <parser>2021/07/27 10:52:19.882</parser>
+      <StyleCop.CSharp.DocumentationRules>2021/07/27 10:52:19.882</StyleCop.CSharp.DocumentationRules>
+      <StyleCop.CSharp.DocumentationRules.FilesHashCode>1693754956</StyleCop.CSharp.DocumentationRules.FilesHashCode>
+      <StyleCop.CSharp.LayoutRules>2021/07/27 10:52:19.882</StyleCop.CSharp.LayoutRules>
+      <StyleCop.CSharp.LayoutRules.FilesHashCode>0</StyleCop.CSharp.LayoutRules.FilesHashCode>
+      <StyleCop.CSharp.MaintainabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.MaintainabilityRules>
+      <StyleCop.CSharp.MaintainabilityRules.FilesHashCode>0</StyleCop.CSharp.MaintainabilityRules.FilesHashCode>
+      <StyleCop.CSharp.NamingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.NamingRules>
+      <StyleCop.CSharp.NamingRules.FilesHashCode>0</StyleCop.CSharp.NamingRules.FilesHashCode>
+      <StyleCop.CSharp.OrderingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.OrderingRules>
+      <StyleCop.CSharp.OrderingRules.FilesHashCode>0</StyleCop.CSharp.OrderingRules.FilesHashCode>
+      <StyleCop.CSharp.ReadabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.ReadabilityRules>
+      <StyleCop.CSharp.ReadabilityRules.FilesHashCode>0</StyleCop.CSharp.ReadabilityRules.FilesHashCode>
+      <StyleCop.CSharp.SpacingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.SpacingRules>
+      <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
+    </timestamps>
+    <violations>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The class must have a documentation header.</context>
+        <line>8</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The constructor must have a documentation header.</context>
+        <line>10</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>13</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="ElementsMustBeSeparatedByBlankLine" ruleCheckId="SA1516">
+        <context>Adjacent elements must be separated by a blank line.</context>
+        <line>13</line>
+        <warning>False</warning>
+      </violation>
+    </violations>
+  </sourcecode>
+  <sourcecode name="Node.cs" parser="StyleCop.CSharp.CsParser">
+    <timestamps>
+      <styleCop>2021/07/27 10:52:19.882</styleCop>
+      <settingsFile>2020/10/22 14:22:10.902</settingsFile>
+      <sourceFile>2021/07/29 16:38:17.754</sourceFile>
+      <parser>2021/07/27 10:52:19.882</parser>
+      <StyleCop.CSharp.DocumentationRules>2021/07/27 10:52:19.882</StyleCop.CSharp.DocumentationRules>
+      <StyleCop.CSharp.DocumentationRules.FilesHashCode>1693754956</StyleCop.CSharp.DocumentationRules.FilesHashCode>
+      <StyleCop.CSharp.LayoutRules>2021/07/27 10:52:19.882</StyleCop.CSharp.LayoutRules>
+      <StyleCop.CSharp.LayoutRules.FilesHashCode>0</StyleCop.CSharp.LayoutRules.FilesHashCode>
+      <StyleCop.CSharp.MaintainabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.MaintainabilityRules>
+      <StyleCop.CSharp.MaintainabilityRules.FilesHashCode>0</StyleCop.CSharp.MaintainabilityRules.FilesHashCode>
+      <StyleCop.CSharp.NamingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.NamingRules>
+      <StyleCop.CSharp.NamingRules.FilesHashCode>0</StyleCop.CSharp.NamingRules.FilesHashCode>
+      <StyleCop.CSharp.OrderingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.OrderingRules>
+      <StyleCop.CSharp.OrderingRules.FilesHashCode>0</StyleCop.CSharp.OrderingRules.FilesHashCode>
+      <StyleCop.CSharp.ReadabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.ReadabilityRules>
+      <StyleCop.CSharp.ReadabilityRules.FilesHashCode>0</StyleCop.CSharp.ReadabilityRules.FilesHashCode>
+      <StyleCop.CSharp.SpacingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.SpacingRules>
+      <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
+    </timestamps>
+    <violations />
+  </sourcecode>
+  <sourcecode name="Number.cs" parser="StyleCop.CSharp.CsParser">
+    <timestamps>
+      <styleCop>2021/07/27 10:52:19.882</styleCop>
+      <settingsFile>2020/10/22 14:22:10.902</settingsFile>
+      <sourceFile>2021/07/29 16:38:23.205</sourceFile>
+      <parser>2021/07/27 10:52:19.882</parser>
+      <StyleCop.CSharp.DocumentationRules>2021/07/27 10:52:19.882</StyleCop.CSharp.DocumentationRules>
+      <StyleCop.CSharp.DocumentationRules.FilesHashCode>1693754956</StyleCop.CSharp.DocumentationRules.FilesHashCode>
+      <StyleCop.CSharp.LayoutRules>2021/07/27 10:52:19.882</StyleCop.CSharp.LayoutRules>
+      <StyleCop.CSharp.LayoutRules.FilesHashCode>0</StyleCop.CSharp.LayoutRules.FilesHashCode>
+      <StyleCop.CSharp.MaintainabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.MaintainabilityRules>
+      <StyleCop.CSharp.MaintainabilityRules.FilesHashCode>0</StyleCop.CSharp.MaintainabilityRules.FilesHashCode>
+      <StyleCop.CSharp.NamingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.NamingRules>
+      <StyleCop.CSharp.NamingRules.FilesHashCode>0</StyleCop.CSharp.NamingRules.FilesHashCode>
+      <StyleCop.CSharp.OrderingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.OrderingRules>
+      <StyleCop.CSharp.OrderingRules.FilesHashCode>0</StyleCop.CSharp.OrderingRules.FilesHashCode>
+      <StyleCop.CSharp.ReadabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.ReadabilityRules>
+      <StyleCop.CSharp.ReadabilityRules.FilesHashCode>0</StyleCop.CSharp.ReadabilityRules.FilesHashCode>
+      <StyleCop.CSharp.SpacingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.SpacingRules>
+      <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
+    </timestamps>
+    <violations>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The class must have a documentation header.</context>
+        <line>8</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The constructor must have a documentation header.</context>
+        <line>10</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>13</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="ElementsMustBeSeparatedByBlankLine" ruleCheckId="SA1516">
+        <context>Adjacent elements must be separated by a blank line.</context>
+        <line>13</line>
+        <warning>False</warning>
+      </violation>
+    </violations>
+  </sourcecode>
+  <project key="-753912112">
+    <configuration>
+    </configuration>
+  </project>
+  <sourcecode name="MathController.cs" parser="StyleCop.CSharp.CsParser">
+    <timestamps>
+      <styleCop>2021/07/27 10:52:19.882</styleCop>
+      <settingsFile>2020/10/22 14:22:10.902</settingsFile>
+      <sourceFile>2021/07/29 17:11:29.810</sourceFile>
+      <parser>2021/07/27 10:52:19.882</parser>
+      <StyleCop.CSharp.DocumentationRules>2021/07/27 10:52:19.882</StyleCop.CSharp.DocumentationRules>
+      <StyleCop.CSharp.DocumentationRules.FilesHashCode>1693754956</StyleCop.CSharp.DocumentationRules.FilesHashCode>
+      <StyleCop.CSharp.LayoutRules>2021/07/27 10:52:19.882</StyleCop.CSharp.LayoutRules>
+      <StyleCop.CSharp.LayoutRules.FilesHashCode>0</StyleCop.CSharp.LayoutRules.FilesHashCode>
+      <StyleCop.CSharp.MaintainabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.MaintainabilityRules>
+      <StyleCop.CSharp.MaintainabilityRules.FilesHashCode>0</StyleCop.CSharp.MaintainabilityRules.FilesHashCode>
+      <StyleCop.CSharp.NamingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.NamingRules>
+      <StyleCop.CSharp.NamingRules.FilesHashCode>0</StyleCop.CSharp.NamingRules.FilesHashCode>
+      <StyleCop.CSharp.OrderingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.OrderingRules>
+      <StyleCop.CSharp.OrderingRules.FilesHashCode>0</StyleCop.CSharp.OrderingRules.FilesHashCode>
+      <StyleCop.CSharp.ReadabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.ReadabilityRules>
+      <StyleCop.CSharp.ReadabilityRules.FilesHashCode>0</StyleCop.CSharp.ReadabilityRules.FilesHashCode>
+      <StyleCop.CSharp.SpacingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.SpacingRules>
+      <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
+    </timestamps>
+    <violations />
+  </sourcecode>
+  <sourcecode name="AddSub.cs" parser="StyleCop.CSharp.CsParser">
+    <timestamps>
+      <styleCop>2021/07/27 10:52:19.882</styleCop>
+      <settingsFile>2020/10/22 14:22:10.902</settingsFile>
+      <sourceFile>2021/07/29 16:40:41.180</sourceFile>
+      <parser>2021/07/27 10:52:19.882</parser>
+      <StyleCop.CSharp.DocumentationRules>2021/07/27 10:52:19.882</StyleCop.CSharp.DocumentationRules>
+      <StyleCop.CSharp.DocumentationRules.FilesHashCode>1693754956</StyleCop.CSharp.DocumentationRules.FilesHashCode>
+      <StyleCop.CSharp.LayoutRules>2021/07/27 10:52:19.882</StyleCop.CSharp.LayoutRules>
+      <StyleCop.CSharp.LayoutRules.FilesHashCode>0</StyleCop.CSharp.LayoutRules.FilesHashCode>
+      <StyleCop.CSharp.MaintainabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.MaintainabilityRules>
+      <StyleCop.CSharp.MaintainabilityRules.FilesHashCode>0</StyleCop.CSharp.MaintainabilityRules.FilesHashCode>
+      <StyleCop.CSharp.NamingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.NamingRules>
+      <StyleCop.CSharp.NamingRules.FilesHashCode>0</StyleCop.CSharp.NamingRules.FilesHashCode>
+      <StyleCop.CSharp.OrderingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.OrderingRules>
+      <StyleCop.CSharp.OrderingRules.FilesHashCode>0</StyleCop.CSharp.OrderingRules.FilesHashCode>
+      <StyleCop.CSharp.ReadabilityRules>2021/07/27 10:52:19.882</StyleCop.CSharp.ReadabilityRules>
+      <StyleCop.CSharp.ReadabilityRules.FilesHashCode>0</StyleCop.CSharp.ReadabilityRules.FilesHashCode>
+      <StyleCop.CSharp.SpacingRules>2021/07/27 10:52:19.882</StyleCop.CSharp.SpacingRules>
+      <StyleCop.CSharp.SpacingRules.FilesHashCode>0</StyleCop.CSharp.SpacingRules.FilesHashCode>
+    </timestamps>
+    <violations>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The constructor must have a documentation header.</context>
+        <line>13</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>16</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="ElementsMustBeSeparatedByBlankLine" ruleCheckId="SA1516">
+        <context>Adjacent elements must be separated by a blank line.</context>
+        <line>16</line>
+        <warning>False</warning>
+      </violation>
+    </violations>
   </sourcecode>
 </stylecopresultscache>
