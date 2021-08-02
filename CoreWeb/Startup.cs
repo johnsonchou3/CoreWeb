@@ -12,7 +12,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 
-
 namespace CoreWeb
 {
     /// <summary>
@@ -41,7 +40,6 @@ namespace CoreWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache();
-            services.AddSingleton<ConcurrentDictionary<string,CalData>>();
             services.AddControllers();
         }
 

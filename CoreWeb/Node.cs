@@ -35,7 +35,7 @@ namespace CoreWeb
         /// <param name="c">節點本身的值(operand/operator)</param>
         public Node(Expression c)
         {
-            Value = c.value;
+            Value = c.Value;
             Left = Right = null;
             Associativity = c.GetAssociativity();
         }

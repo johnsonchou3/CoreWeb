@@ -12,7 +12,6 @@ using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using System.Threading;
 using System.Collections.Concurrent;
 
-
 namespace CoreWeb.Controllers
 {
     [ApiController]
@@ -27,17 +26,19 @@ namespace CoreWeb.Controllers
         /// 計算機的cache, 會有所有用家的caldata
         /// </summary>
         private readonly IMemoryCache cache;
-        private readonly ConcurrentDictionary<string, CalData> condict;
+
+        /// <summary>
+        /// lock 物件, 確保每次只有一個request 傳入以免有race condition
+        /// </summary>
         private static object Lock = new object ();
 
         /// <summary>
         /// 建構子, 每次使用都會存取memorycache
         /// </summary>
         /// <param name="_memoryCache">系統的memorycache</param>
-        public MathController(IMemoryCache _memoryCache, ConcurrentDictionary<string, CalData> _condict)
+        public MathController(IMemoryCache _memoryCache)
         {
             this.cache = _memoryCache;
-            this.condict = _condict;
         }
 
         /// <summary>
@@ -58,14 +59,14 @@ namespace CoreWeb.Controllers
         [HttpPost("Numpad")]
         public IActionResult Numpad(string btnnum)
         {
-            lock (Lock)
-            {
                 string Idkey = Request.Cookies["ID"];
                 if (Idkey == null)
                 {
                     Idkey = Guid.NewGuid().ToString();
                 }
                 Response.Cookies.Append("ID", Idkey);
+            lock (Lock)
+            {
                 CalData caldata;
                 var a = cache.Get(Idkey);
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
@@ -73,9 +74,6 @@ namespace CoreWeb.Controllers
                 AddNum();
                 caldata.StoretoDisplay();
                 return Ok(caldata);
-
-
-
 
                 // 把按鍵值加到TempInputString最後
                 void AddNum()
@@ -102,14 +100,14 @@ namespace CoreWeb.Controllers
         [HttpPost("Operation")]
         public IActionResult Operation(string btnop)
         {
-            lock (Lock)
-            {
                 string Idkey = Request.Cookies["ID"];
                 if (Idkey == null)
                 {
                     Idkey = Guid.NewGuid().ToString();
                 }
                 Response.Cookies.Append("ID", Idkey);
+            lock (Lock)
+            {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 if (caldata.IsOperating)
@@ -157,14 +155,14 @@ namespace CoreWeb.Controllers
         [HttpPost("Execute")]
         public IActionResult Execute()
         {
-            lock (Lock)
-            {
                 string Idkey = Request.Cookies["ID"];
                 if (Idkey == null)
                 {
                     Idkey = Guid.NewGuid().ToString();
                 }
                 Response.Cookies.Append("ID", Idkey);
+            lock (Lock)
+            {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 if (!caldata.IsAfterBracket)
@@ -263,14 +261,14 @@ namespace CoreWeb.Controllers
         [HttpPost("Root")]
         public IActionResult Root()
         {
-            lock (Lock)
-            {
                 string Idkey = Request.Cookies["ID"];
                 if (Idkey == null)
                 {
                     Idkey = Guid.NewGuid().ToString();
                 }
                 Response.Cookies.Append("ID", Idkey);
+            lock (Lock)
+            {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 double tempnum = double.Parse(caldata.TempInputString);
@@ -286,14 +284,14 @@ namespace CoreWeb.Controllers
         [HttpPost("ClearEntry")]
         public IActionResult ClearEntry()
         {
-            lock (Lock)
-            {
                 string Idkey = Request.Cookies["ID"];
                 if (Idkey == null)
                 {
                     Idkey = Guid.NewGuid().ToString();
                 }
                 Response.Cookies.Append("ID", Idkey);
+            lock (Lock)
+            {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 caldata.TempInputString = "0";
@@ -308,14 +306,14 @@ namespace CoreWeb.Controllers
         [HttpPost("ClearAll")]
         public IActionResult ClearAll()
         {
-            lock (Lock)
-            {
                 string Idkey = Request.Cookies["ID"];
                 if (Idkey == null)
                 {
                     Idkey = Guid.NewGuid().ToString();
                 }
                 Response.Cookies.Append("ID", Idkey);
+            lock (Lock)
+            {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 caldata.IsAfterBracket = false;
@@ -339,14 +337,14 @@ namespace CoreWeb.Controllers
         [HttpPost("Dec")]
         public IActionResult Dec()
         {
-            lock (Lock)
-            {
                 string Idkey = Request.Cookies["ID"];
                 if (Idkey == null)
                 {
                     Idkey = Guid.NewGuid().ToString();
                 }
                 Response.Cookies.Append("ID", Idkey);
+            lock (Lock)
+            {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 caldata.TempInputString += ".";
@@ -361,14 +359,14 @@ namespace CoreWeb.Controllers
         [HttpPost("PosNeg")]
         public IActionResult PosNeg()
         {
-            lock (Lock)
-            {
                 string Idkey = Request.Cookies["ID"];
                 if (Idkey == null)
                 {
                     Idkey = Guid.NewGuid().ToString();
                 }
                 Response.Cookies.Append("ID", Idkey);
+            lock (Lock)
+            {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 SwitchPosNeg();
@@ -390,14 +388,14 @@ namespace CoreWeb.Controllers
         [HttpPost("Backspace")]
         public IActionResult Backspace()
         {
-            lock (Lock)
-            {
                 string Idkey = Request.Cookies["ID"];
                 if (Idkey == null)
                 {
                     Idkey = Guid.NewGuid().ToString();
                 }
                 Response.Cookies.Append("ID", Idkey);
+            lock (Lock)
+            {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 try
@@ -426,14 +424,14 @@ namespace CoreWeb.Controllers
         [HttpPost("BracketOp")]
         public IActionResult BracketOp(string bracket)
         {
-            lock (Lock)
-            {
                 string Idkey = Request.Cookies["ID"];
                 if (Idkey == null)
                 {
                     Idkey = Guid.NewGuid().ToString();
                 }
                 Response.Cookies.Append("ID", Idkey);
+            lock (Lock)
+            {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 caldata.Expressionlist.Add(bracket);
@@ -451,14 +449,14 @@ namespace CoreWeb.Controllers
         [HttpPost("BracketClose")]
         public IActionResult BracketClose(string bracket)
         {
-            lock (Lock)
-            {
                 string Idkey = Request.Cookies["ID"];
                 if (Idkey == null)
                 {
                     Idkey = Guid.NewGuid().ToString();
                 }
                 Response.Cookies.Append("ID", Idkey);
+            lock (Lock)
+            {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 caldata.StringOfOperation += caldata.TempInputString;
