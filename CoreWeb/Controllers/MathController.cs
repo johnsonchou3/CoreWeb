@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using System.Threading;
+using System.Collections.Concurrent;
+
 
 namespace CoreWeb.Controllers
 {
@@ -25,14 +27,17 @@ namespace CoreWeb.Controllers
         /// 計算機的cache, 會有所有用家的caldata
         /// </summary>
         private readonly IMemoryCache cache;
+        private readonly ConcurrentDictionary<string, CalData> condict;
+        private static object Lock = new object ();
 
         /// <summary>
         /// 建構子, 每次使用都會存取memorycache
         /// </summary>
         /// <param name="_memoryCache">系統的memorycache</param>
-        public MathController(IMemoryCache _memoryCache)
+        public MathController(IMemoryCache _memoryCache, ConcurrentDictionary<string, CalData> _condict)
         {
             this.cache = _memoryCache;
+            this.condict = _condict;
         }
 
         /// <summary>
@@ -53,32 +58,38 @@ namespace CoreWeb.Controllers
         [HttpPost("Numpad")]
         public IActionResult Numpad(string btnnum)
         {
-            string Idkey = Request.Cookies["ID"];
-            if (Idkey == null)
+            lock (Lock)
             {
-                Idkey = Guid.NewGuid().ToString();
-            }
-            Response.Cookies.Append("ID", Idkey);
-            CalData caldata;
-            var a = cache.Get(Idkey);
-            caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-            caldata.IsOperating = false;
-            AddNum();
-            caldata.StoretoDisplay();
-            return Ok(caldata);
-
-            // 把按鍵值加到TempInputString最後
-            void AddNum()
-            {
-                try
+                string Idkey = Request.Cookies["ID"];
+                if (Idkey == null)
                 {
-                    caldata.TempInputString += btnnum;
-                    caldata.TempInputString = double.Parse(caldata.TempInputString).ToString();
+                    Idkey = Guid.NewGuid().ToString();
                 }
-                catch (FormatException)
+                Response.Cookies.Append("ID", Idkey);
+                CalData caldata;
+                var a = cache.Get(Idkey);
+                caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+                caldata.IsOperating = false;
+                AddNum();
+                caldata.StoretoDisplay();
+                return Ok(caldata);
+
+
+
+
+                // 把按鍵值加到TempInputString最後
+                void AddNum()
                 {
-                    //tempinputstring = null 會出現, 這時候讓tempinputstring = 數字鍵
-                    caldata.TempInputString = btnnum;
+                    try
+                    {
+                        caldata.TempInputString += btnnum;
+                        caldata.TempInputString = double.Parse(caldata.TempInputString).ToString();
+                    }
+                    catch (FormatException)
+                    {
+                        //tempinputstring = null 會出現, 這時候讓tempinputstring = 數字鍵
+                        caldata.TempInputString = btnnum;
+                    }
                 }
             }
         }
@@ -91,48 +102,51 @@ namespace CoreWeb.Controllers
         [HttpPost("Operation")]
         public IActionResult Operation(string btnop)
         {
-            string Idkey = Request.Cookies["ID"];
-            if (Idkey == null)
+            lock (Lock)
             {
-                Idkey = Guid.NewGuid().ToString();
-            }
-            Response.Cookies.Append("ID", Idkey);
-            CalData caldata;
-            caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-            if (caldata.IsOperating)
-            {
-                caldata.StringOfOperation = caldata.StringOfOperation.Remove(caldata.StringOfOperation.Length - 1, 1) + btnop;
-            }
-            else
-            {
-                caldata.IsOperating = true;
-                if (caldata.IsAfterBracket)
+                string Idkey = Request.Cookies["ID"];
+                if (Idkey == null)
                 {
-                    caldata.Expressionlist.Add(btnop);
-                    caldata.StringOfOperation += btnop;
-                    caldata.IsAfterBracket = false;
+                    Idkey = Guid.NewGuid().ToString();
+                }
+                Response.Cookies.Append("ID", Idkey);
+                CalData caldata;
+                caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+                if (caldata.IsOperating)
+                {
+                    caldata.StringOfOperation = caldata.StringOfOperation.Remove(caldata.StringOfOperation.Length - 1, 1) + btnop;
                 }
                 else
                 {
-                    SaveValue();
-                    ClearTemp();
+                    caldata.IsOperating = true;
+                    if (caldata.IsAfterBracket)
+                    {
+                        caldata.Expressionlist.Add(btnop);
+                        caldata.StringOfOperation += btnop;
+                        caldata.IsAfterBracket = false;
+                    }
+                    else
+                    {
+                        SaveValue();
+                        ClearTemp();
+                    }
                 }
-            }
-            caldata.StoretoDisplay();
-            return Ok(caldata);
+                caldata.StoretoDisplay();
+                return Ok(caldata);
 
-            // 把TempInputString及目前的operator寫入StringOfOperation中
-            void SaveValue()
-            {
-                caldata.StringOfOperation += double.Parse(caldata.TempInputString).ToString() + btnop;
-                caldata.Expressionlist.Add(caldata.TempInputString);
-                caldata.Expressionlist.Add(btnop);
-            }
+                // 把TempInputString及目前的operator寫入StringOfOperation中
+                void SaveValue()
+                {
+                    caldata.StringOfOperation += double.Parse(caldata.TempInputString).ToString() + btnop;
+                    caldata.Expressionlist.Add(caldata.TempInputString);
+                    caldata.Expressionlist.Add(btnop);
+                }
 
-            // 寫入後把TempInputString清空作下一次儲存
-            void ClearTemp()
-            {
-                caldata.TempInputString = "0";
+                // 寫入後把TempInputString清空作下一次儲存
+                void ClearTemp()
+                {
+                    caldata.TempInputString = "0";
+                }
             }
         }
 
@@ -143,98 +157,101 @@ namespace CoreWeb.Controllers
         [HttpPost("Execute")]
         public IActionResult Execute()
         {
-            string Idkey = Request.Cookies["ID"];
-            if (Idkey == null)
+            lock (Lock)
             {
-                Idkey = Guid.NewGuid().ToString();
-            }
-            Response.Cookies.Append("ID", Idkey);
-            CalData caldata;
-            caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-            if (!caldata.IsAfterBracket)
-            {
-                SaveValue();
-                caldata.IsAfterBracket = false;
-            }
-            try
-            {
-                Node ExpTree = Node.CreateTree(caldata.Expressionlist);
-                caldata.Preordstring = "Pre-Order: \n";
-                caldata.Inordstring = "In-Order: \n";
-                caldata.Postordstring = "Post-Order: \n";
-                GetPreorder(ExpTree);
-                GetInorder(ExpTree);
-                GetPostorder(ExpTree);
-                caldata.TempInputString = GetResult(ExpTree).ToString();
-                caldata.DisplayOperation = caldata.StringOfOperation;
-                caldata.StringOfOperation = string.Empty;
-                caldata.Expressionlist.Clear();
-                caldata.IsAfterBracket = false;
-                return Ok(caldata);
-            }
-            catch
-            {
-                return BadRequest("Input Error, please clear all and try again");
-            }
-
-            // 把目前輸入值加進運算式中
-            void SaveValue()
-            {
-                caldata.StringOfOperation += caldata.TempInputString;
-                caldata.Expressionlist.Add(caldata.TempInputString);
-            }
-
-            // 把運算式(string) 加到URL POST 給WebAPI 作運算並回傳結果(string)
-            double GetResult(Node root)
-            {
-                if (root != null)
+                string Idkey = Request.Cookies["ID"];
+                if (Idkey == null)
                 {
-                    if (root.Left == null && root.Right == null)
+                    Idkey = Guid.NewGuid().ToString();
+                }
+                Response.Cookies.Append("ID", Idkey);
+                CalData caldata;
+                caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+                if (!caldata.IsAfterBracket)
+                {
+                    SaveValue();
+                    caldata.IsAfterBracket = false;
+                }
+                try
+                {
+                    Node ExpTree = Node.CreateTree(caldata.Expressionlist);
+                    caldata.Preordstring = "Pre-Order: \n";
+                    caldata.Inordstring = "In-Order: \n";
+                    caldata.Postordstring = "Post-Order: \n";
+                    GetPreorder(ExpTree);
+                    GetInorder(ExpTree);
+                    GetPostorder(ExpTree);
+                    caldata.TempInputString = GetResult(ExpTree).ToString();
+                    caldata.DisplayOperation = caldata.StringOfOperation;
+                    caldata.StringOfOperation = string.Empty;
+                    caldata.Expressionlist.Clear();
+                    caldata.IsAfterBracket = false;
+                    return Ok(caldata);
+                }
+                catch
+                {
+                    return BadRequest("Input Error, please clear all and try again");
+                }
+
+                // 把目前輸入值加進運算式中
+                void SaveValue()
+                {
+                    caldata.StringOfOperation += caldata.TempInputString;
+                    caldata.Expressionlist.Add(caldata.TempInputString);
+                }
+
+                // 把運算式(string) 加到URL POST 給WebAPI 作運算並回傳結果(string)
+                double GetResult(Node root)
+                {
+                    if (root != null)
                     {
-                        return double.Parse(root.Value);
+                        if (root.Left == null && root.Right == null)
+                        {
+                            return double.Parse(root.Value);
+                        }
+                        double left_val = GetResult(root.Left);
+                        double right_val = GetResult(root.Right);
+                        Dictionary<string, double> OperationMap = new Dictionary<string, double>();
+                        OperationMap.Add("+", left_val + right_val);
+                        OperationMap.Add("-", left_val - right_val);
+                        OperationMap.Add("*", left_val * right_val);
+                        OperationMap.Add("/", left_val / right_val);
+                        return OperationMap[root.Value];
                     }
-                    double left_val = GetResult(root.Left);
-                    double right_val = GetResult(root.Right);
-                    Dictionary<string, double> OperationMap = new Dictionary<string, double>();
-                    OperationMap.Add("+", left_val + right_val);
-                    OperationMap.Add("-", left_val - right_val);
-                    OperationMap.Add("*", left_val * right_val);
-                    OperationMap.Add("/", left_val / right_val);
-                    return OperationMap[root.Value];
+                    return 0;
                 }
-                return 0;
-            }
 
-            // 以前序編歷Tree, 並把value 加到Preordstring 以顯示
-            void GetPreorder(Node root)
-            {
-                if (root != null)
+                // 以前序編歷Tree, 並把value 加到Preordstring 以顯示
+                void GetPreorder(Node root)
                 {
-                    caldata.Preordstring += root.Value + " ";
-                    GetPreorder(root.Left);
-                    GetPreorder(root.Right);
+                    if (root != null)
+                    {
+                        caldata.Preordstring += root.Value + " ";
+                        GetPreorder(root.Left);
+                        GetPreorder(root.Right);
+                    }
                 }
-            }
 
-            // 以中序編歷Tree, 並把value 加到Preordstring 以顯示
-            void GetInorder(Node root)
-            {
-                if (root != null)
+                // 以中序編歷Tree, 並把value 加到Preordstring 以顯示
+                void GetInorder(Node root)
                 {
-                    GetInorder(root.Left);
-                    caldata.Inordstring += root.Value + " ";
-                    GetInorder(root.Right);
+                    if (root != null)
+                    {
+                        GetInorder(root.Left);
+                        caldata.Inordstring += root.Value + " ";
+                        GetInorder(root.Right);
+                    }
                 }
-            }
 
-            // 以後序編歷Tree, 並把value 加到Preordstring 以顯示
-            void GetPostorder(Node root)
-            {
-                if (root != null)
+                // 以後序編歷Tree, 並把value 加到Preordstring 以顯示
+                void GetPostorder(Node root)
                 {
-                    GetPostorder(root.Left);
-                    GetPostorder(root.Right);
-                    caldata.Postordstring += root.Value + " ";
+                    if (root != null)
+                    {
+                        GetPostorder(root.Left);
+                        GetPostorder(root.Right);
+                        caldata.Postordstring += root.Value + " ";
+                    }
                 }
             }
         }
@@ -246,17 +263,20 @@ namespace CoreWeb.Controllers
         [HttpPost("Root")]
         public IActionResult Root()
         {
-            string Idkey = Request.Cookies["ID"];
-            if (Idkey == null)
+            lock (Lock)
             {
-                Idkey = Guid.NewGuid().ToString();
+                string Idkey = Request.Cookies["ID"];
+                if (Idkey == null)
+                {
+                    Idkey = Guid.NewGuid().ToString();
+                }
+                Response.Cookies.Append("ID", Idkey);
+                CalData caldata;
+                caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+                double tempnum = double.Parse(caldata.TempInputString);
+                caldata.TempInputString = Math.Sqrt(tempnum).ToString();
+                return Ok(caldata);
             }
-            Response.Cookies.Append("ID", Idkey);
-            CalData caldata;
-            caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-            double tempnum = double.Parse(caldata.TempInputString);
-            caldata.TempInputString = Math.Sqrt(tempnum).ToString();
-            return Ok(caldata);
         }
 
         /// <summary>
@@ -266,16 +286,19 @@ namespace CoreWeb.Controllers
         [HttpPost("ClearEntry")]
         public IActionResult ClearEntry()
         {
-            string Idkey = Request.Cookies["ID"];
-            if (Idkey == null)
+            lock (Lock)
             {
-                Idkey = Guid.NewGuid().ToString();
+                string Idkey = Request.Cookies["ID"];
+                if (Idkey == null)
+                {
+                    Idkey = Guid.NewGuid().ToString();
+                }
+                Response.Cookies.Append("ID", Idkey);
+                CalData caldata;
+                caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+                caldata.TempInputString = "0";
+                return Ok(caldata);
             }
-            Response.Cookies.Append("ID", Idkey);
-            CalData caldata;
-            caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-            caldata.TempInputString = "0";
-            return Ok(caldata);
         }
 
         /// <summary>
@@ -285,24 +308,27 @@ namespace CoreWeb.Controllers
         [HttpPost("ClearAll")]
         public IActionResult ClearAll()
         {
-            string Idkey = Request.Cookies["ID"];
-            if (Idkey == null)
+            lock (Lock)
             {
-                Idkey = Guid.NewGuid().ToString();
-            }
-            Response.Cookies.Append("ID", Idkey);
-            CalData caldata;
-            caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-            caldata.IsAfterBracket = false;
-            caldata.TempInputString = "0";
-            ClearDatas();
-            caldata.StoretoDisplay();
-            return Ok(caldata);
+                string Idkey = Request.Cookies["ID"];
+                if (Idkey == null)
+                {
+                    Idkey = Guid.NewGuid().ToString();
+                }
+                Response.Cookies.Append("ID", Idkey);
+                CalData caldata;
+                caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+                caldata.IsAfterBracket = false;
+                caldata.TempInputString = "0";
+                ClearDatas();
+                caldata.StoretoDisplay();
+                return Ok(caldata);
 
-            void ClearDatas()
-            {
-                caldata.StringOfOperation = string.Empty;
-                caldata.Expressionlist.Clear();
+                void ClearDatas()
+                {
+                    caldata.StringOfOperation = string.Empty;
+                    caldata.Expressionlist.Clear();
+                }
             }
         }
 
@@ -313,16 +339,19 @@ namespace CoreWeb.Controllers
         [HttpPost("Dec")]
         public IActionResult Dec()
         {
-            string Idkey = Request.Cookies["ID"];
-            if (Idkey == null)
+            lock (Lock)
             {
-                Idkey = Guid.NewGuid().ToString();
+                string Idkey = Request.Cookies["ID"];
+                if (Idkey == null)
+                {
+                    Idkey = Guid.NewGuid().ToString();
+                }
+                Response.Cookies.Append("ID", Idkey);
+                CalData caldata;
+                caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+                caldata.TempInputString += ".";
+                return Ok(caldata);
             }
-            Response.Cookies.Append("ID", Idkey);
-            CalData caldata;
-            caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-            caldata.TempInputString += ".";
-            return Ok(caldata);
         }
 
         /// <summary>
@@ -332,22 +361,25 @@ namespace CoreWeb.Controllers
         [HttpPost("PosNeg")]
         public IActionResult PosNeg()
         {
-            string Idkey = Request.Cookies["ID"];
-            if (Idkey == null)
+            lock (Lock)
             {
-                Idkey = Guid.NewGuid().ToString();
-            }
-            Response.Cookies.Append("ID", Idkey);
-            CalData caldata;
-            caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-            SwitchPosNeg();
-            return Ok(caldata);
+                string Idkey = Request.Cookies["ID"];
+                if (Idkey == null)
+                {
+                    Idkey = Guid.NewGuid().ToString();
+                }
+                Response.Cookies.Append("ID", Idkey);
+                CalData caldata;
+                caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+                SwitchPosNeg();
+                return Ok(caldata);
 
-            void SwitchPosNeg()
-            {
-                string txtboxstr = caldata.TempInputString;
-                decimal reversed = decimal.Parse(txtboxstr) * (-1);
-                caldata.TempInputString = reversed.ToString();
+                void SwitchPosNeg()
+                {
+                    string txtboxstr = caldata.TempInputString;
+                    decimal reversed = decimal.Parse(txtboxstr) * (-1);
+                    caldata.TempInputString = reversed.ToString();
+                }
             }
         }
 
@@ -358,28 +390,31 @@ namespace CoreWeb.Controllers
         [HttpPost("Backspace")]
         public IActionResult Backspace()
         {
-            string Idkey = Request.Cookies["ID"];
-            if (Idkey == null)
+            lock (Lock)
             {
-                Idkey = Guid.NewGuid().ToString();
-            }
-            Response.Cookies.Append("ID", Idkey);
-            CalData caldata;
-            caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-            try
-            {
-                RemoveLastDigit();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                caldata.TempInputString = "0";
-            }
-            return Ok(caldata);
+                string Idkey = Request.Cookies["ID"];
+                if (Idkey == null)
+                {
+                    Idkey = Guid.NewGuid().ToString();
+                }
+                Response.Cookies.Append("ID", Idkey);
+                CalData caldata;
+                caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+                try
+                {
+                    RemoveLastDigit();
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    caldata.TempInputString = "0";
+                }
+                return Ok(caldata);
 
-            void RemoveLastDigit()
-            {
-                string curtextbox = caldata.TempInputString;
-                caldata.TempInputString = (curtextbox).Remove(Math.Max(1, curtextbox.Length - 1));
+                void RemoveLastDigit()
+                {
+                    string curtextbox = caldata.TempInputString;
+                    caldata.TempInputString = (curtextbox).Remove(Math.Max(1, curtextbox.Length - 1));
+                }
             }
         }
 
@@ -391,18 +426,21 @@ namespace CoreWeb.Controllers
         [HttpPost("BracketOp")]
         public IActionResult BracketOp(string bracket)
         {
-            string Idkey = Request.Cookies["ID"];
-            if (Idkey == null)
+            lock (Lock)
             {
-                Idkey = Guid.NewGuid().ToString();
+                string Idkey = Request.Cookies["ID"];
+                if (Idkey == null)
+                {
+                    Idkey = Guid.NewGuid().ToString();
+                }
+                Response.Cookies.Append("ID", Idkey);
+                CalData caldata;
+                caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+                caldata.Expressionlist.Add(bracket);
+                caldata.StringOfOperation += bracket;
+                caldata.StoretoDisplay();
+                return Ok(caldata);
             }
-            Response.Cookies.Append("ID", Idkey);
-            CalData caldata;
-            caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-            caldata.Expressionlist.Add(bracket);
-            caldata.StringOfOperation += bracket;
-            caldata.StoretoDisplay();
-            return Ok(caldata);
         }
 
         /// <summary>
@@ -413,22 +451,25 @@ namespace CoreWeb.Controllers
         [HttpPost("BracketClose")]
         public IActionResult BracketClose(string bracket)
         {
-            string Idkey = Request.Cookies["ID"];
-            if (Idkey == null)
+            lock (Lock)
             {
-                Idkey = Guid.NewGuid().ToString();
+                string Idkey = Request.Cookies["ID"];
+                if (Idkey == null)
+                {
+                    Idkey = Guid.NewGuid().ToString();
+                }
+                Response.Cookies.Append("ID", Idkey);
+                CalData caldata;
+                caldata = cache.GetOrCreate(Idkey, entry => new CalData());
+                caldata.StringOfOperation += caldata.TempInputString;
+                caldata.Expressionlist.Add(caldata.TempInputString);
+                caldata.Expressionlist.Add(bracket);
+                caldata.StringOfOperation += bracket;
+                caldata.StoretoDisplay();
+                caldata.TempInputString = "0";
+                caldata.IsAfterBracket = true;
+                return Ok(caldata);
             }
-            Response.Cookies.Append("ID", Idkey);
-            CalData caldata;
-            caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-            caldata.StringOfOperation += caldata.TempInputString;
-            caldata.Expressionlist.Add(caldata.TempInputString);
-            caldata.Expressionlist.Add(bracket);
-            caldata.StringOfOperation += bracket;
-            caldata.StoretoDisplay();
-            caldata.TempInputString = "0";
-            caldata.IsAfterBracket = true;
-            return Ok(caldata);
         }
     }
 }
