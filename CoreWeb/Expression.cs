@@ -29,5 +29,7 @@ namespace CoreWeb
         /// </summary>
         /// <returns></returns>
         public abstract int GetAssociativity();
+        public abstract void ExpAction(Stack<Node> StackNodeTree, Stack<Node> StackNodeString);
+
     }
 }

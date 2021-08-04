@@ -26,5 +26,19 @@ namespace CoreWeb
         {
             return 2;
         }
+        public override void ExpAction(Stack<Node> StackNodeTree, Stack<Node> StackNodeString)
+        {
+            Node t3 = new Node(this);
+            while (StackNodeString.Peek().Value != "(" && StackNodeString.Peek().Associativity >= 2)
+            {
+                Node t = StackNodeString.Pop();
+                Node t1 = StackNodeTree.Pop();
+                Node t2 = StackNodeTree.Pop();
+                t.Left = t2;
+                t.Right = t1;
+                StackNodeTree.Push(t);
+            }
+            StackNodeString.Push(t3);
+        }
     }
 }

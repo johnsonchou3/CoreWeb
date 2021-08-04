@@ -21,6 +21,11 @@ namespace CoreWeb
         public bool IsOperating { get; set; } = false;
 
         /// <summary>
+        /// 判斷是否剛進行了等於, 以便在運算後重置數字
+        /// </summary>
+        public bool IsAfterExecute { get; set; } = false;
+
+        /// <summary>
         /// 目前的運算式, 每按operation/bracket/execute 都會使其更新, 在execute/ClearAll後會清空
         /// </summary>
         public string StringOfOperation { get; set; }
@@ -53,7 +58,7 @@ namespace CoreWeb
         /// <summary>
         /// 存入每個operand 及operator 的List, 以便在execute 創建tree
         /// </summary>
-        public List<string> Expressionlist { get; set; } = new List<string>();
+        public List<Expression> Expressionlist { get; set; } = new List<Expression>();
 
         /// <summary>
         /// 內建的儲存displayoperation method 方便使用

@@ -47,76 +47,16 @@ namespace CoreWeb
         /// </summary>
         /// <param name="Expressionlist">需要Btn的ExpressionList, iterate 每一個operand/operator</param>
         /// <returns></returns>
-        public static Node CreateTree(List<string> Expressionlist)
+        public static Node CreateTree(List<Expression> Expressionlist)
         {
             Stack<Node> StackNodeTree = new Stack<Node>();
             Stack<Node> StackNodeString = new Stack<Node>();
             Node t;
-            Node t1;
-            Node t2;
-            Node t3;
-            Expressionlist.Insert(0, "(");
-            Expressionlist.Add(")");
-            foreach (string oper in Expressionlist)
+            Expressionlist.Insert(0, new OpBrac("("));
+            Expressionlist.Add(new CloseBrac(")"));
+            foreach (Expression exp in Expressionlist)
             {
-                if (oper == "*" || oper == "/")
-                {
-                    MultDiv exp = new MultDiv(oper);
-                    t3 = new Node(exp);
-                }
-                else if (oper == "+" || oper == "-")
-                {
-                    AddSub exp = new AddSub(oper);
-                    t3 = new Node(exp);
-                }
-                else if (oper == ")")
-                {
-                    CloseBrac exp = new CloseBrac(oper);
-                    t3 = new Node(exp);
-                }
-                else
-                {
-                    Number exp = new Number(oper);
-                    t3 = new Node(exp);
-                }
-                if (oper == "(")
-                {
-                    StackNodeString.Push(t3);
-                }
-                else if (t3.Associativity == -1)
-                {
-                    StackNodeTree.Push(t3);
-                }
-                else if (t3.Associativity > 0)
-                {
-                    while (StackNodeString.Peek().Value != "(" && StackNodeString.Peek().Associativity >= t3.Associativity)
-                    {
-                        t = StackNodeString.Pop();
-                        t1 = StackNodeTree.Pop();
-                        t2 = StackNodeTree.Pop();
-                        t.Left = t2;
-                        t.Right = t1;
-                        StackNodeTree.Push(t);
-                    }
-                    StackNodeString.Push(t3);
-                }
-                else if (oper == ")")
-                {
-                    while (StackNodeString.Peek().Value != "(")
-                    {
-                        //前面的再把它弄成樹(括號內)
-                        t = StackNodeString.Peek();
-                        StackNodeString.Pop();
-                        t1 = StackNodeTree.Peek();
-                        StackNodeTree.Pop();
-                        t2 = StackNodeTree.Peek();
-                        StackNodeTree.Pop();
-                        t.Left = t2;
-                        t.Right = t1;
-                        StackNodeTree.Push(t);
-                    }
-                    StackNodeString.Pop();
-                }
+                exp.ExpAction(StackNodeTree, StackNodeString);
             }
             t = StackNodeTree.Peek();
             return t;

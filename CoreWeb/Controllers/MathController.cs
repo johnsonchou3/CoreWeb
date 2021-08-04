@@ -27,6 +27,7 @@ namespace CoreWeb.Controllers
         /// </summary>
         private readonly IMemoryCache cache;
 
+
         /// <summary>
         /// lock 物件, 確保每次只有一個request 傳入以免有race condition
         /// </summary>
@@ -68,12 +69,21 @@ namespace CoreWeb.Controllers
             lock (Lock)
             {
                 CalData caldata;
-                var a = cache.Get(Idkey);
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 caldata.IsOperating = false;
-                AddNum();
-                caldata.StoretoDisplay();
-                return Ok(caldata);
+                if (caldata.IsAfterExecute == true)
+                {
+                    caldata.IsAfterExecute = false;
+                    caldata.TempInputString = btnnum;
+                    caldata.StoretoDisplay();
+                    return Ok(caldata);
+                }
+                else
+                {
+                    AddNum();
+                    caldata.StoretoDisplay();
+                    return Ok(caldata);
+                }
 
                 // 把按鍵值加到TempInputString最後
                 void AddNum()
@@ -81,7 +91,10 @@ namespace CoreWeb.Controllers
                     try
                     {
                         caldata.TempInputString += btnnum;
-                        caldata.TempInputString = double.Parse(caldata.TempInputString).ToString();
+                        if (btnnum != "0")
+                        {
+                            caldata.TempInputString = double.Parse(caldata.TempInputString).ToString();
+                        }
                     }
                     catch (FormatException)
                     {
@@ -119,7 +132,7 @@ namespace CoreWeb.Controllers
                     caldata.IsOperating = true;
                     if (caldata.IsAfterBracket)
                     {
-                        caldata.Expressionlist.Add(btnop);
+                        AddtoList();
                         caldata.StringOfOperation += btnop;
                         caldata.IsAfterBracket = false;
                     }
@@ -136,9 +149,22 @@ namespace CoreWeb.Controllers
                 void SaveValue()
                 {
                     caldata.StringOfOperation += double.Parse(caldata.TempInputString).ToString() + btnop;
-                    caldata.Expressionlist.Add(caldata.TempInputString);
-                    caldata.Expressionlist.Add(btnop);
+                    caldata.Expressionlist.Add(new Number(caldata.TempInputString));
+                    AddtoList();
                 }
+
+                void AddtoList()
+                {
+                    if (btnop == "*" || btnop == "/")
+                    {
+                        caldata.Expressionlist.Add(new MultDiv(btnop));
+                    }
+                    else
+                    {
+                        caldata.Expressionlist.Add(new AddSub(btnop));
+                    }
+                }
+
 
                 // 寫入後把TempInputString清空作下一次儲存
                 void ClearTemp()
@@ -184,6 +210,8 @@ namespace CoreWeb.Controllers
                     caldata.StringOfOperation = string.Empty;
                     caldata.Expressionlist.Clear();
                     caldata.IsAfterBracket = false;
+                    caldata.IsOperating = false;
+                    caldata.IsAfterExecute = true;
                     return Ok(caldata);
                 }
                 catch
@@ -195,7 +223,7 @@ namespace CoreWeb.Controllers
                 void SaveValue()
                 {
                     caldata.StringOfOperation += caldata.TempInputString;
-                    caldata.Expressionlist.Add(caldata.TempInputString);
+                    caldata.Expressionlist.Add(new Number(caldata.TempInputString));
                 }
 
                 // 把運算式(string) 加到URL POST 給WebAPI 作運算並回傳結果(string)
@@ -348,6 +376,7 @@ namespace CoreWeb.Controllers
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 caldata.TempInputString += ".";
+                caldata.IsAfterExecute = false;
                 return Ok(caldata);
             }
         }
@@ -434,7 +463,7 @@ namespace CoreWeb.Controllers
             {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-                caldata.Expressionlist.Add(bracket);
+                caldata.Expressionlist.Add(new OpBrac(bracket));
                 caldata.StringOfOperation += bracket;
                 caldata.StoretoDisplay();
                 return Ok(caldata);
@@ -460,8 +489,8 @@ namespace CoreWeb.Controllers
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
                 caldata.StringOfOperation += caldata.TempInputString;
-                caldata.Expressionlist.Add(caldata.TempInputString);
-                caldata.Expressionlist.Add(bracket);
+                caldata.Expressionlist.Add(new Number(caldata.TempInputString));
+                caldata.Expressionlist.Add(new CloseBrac(bracket));
                 caldata.StringOfOperation += bracket;
                 caldata.StoretoDisplay();
                 caldata.TempInputString = "0";

@@ -1,3 +1,9 @@
+C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.csproj.AssemblyReference.cache
+C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.AssemblyInfoInputs.cache
+C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.AssemblyInfo.cs
+C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.csproj.CoreCompileInputs.cache
+C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\user1\Documents\CoreWeb\CoreWeb\bin\Debug\net5.0\appsettings.Development.json
 C:\Users\user1\Documents\CoreWeb\CoreWeb\bin\Debug\net5.0\appsettings.json
 C:\Users\user1\Documents\CoreWeb\CoreWeb\bin\Debug\net5.0\CoreWeb.exe
@@ -7,12 +13,6 @@ C:\Users\user1\Documents\CoreWeb\CoreWeb\bin\Debug\net5.0\CoreWeb.runtimeconfig.
 C:\Users\user1\Documents\CoreWeb\CoreWeb\bin\Debug\net5.0\CoreWeb.dll
 C:\Users\user1\Documents\CoreWeb\CoreWeb\bin\Debug\net5.0\ref\CoreWeb.dll
 C:\Users\user1\Documents\CoreWeb\CoreWeb\bin\Debug\net5.0\CoreWeb.pdb
-C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.csproj.AssemblyReference.cache
-C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.AssemblyInfoInputs.cache
-C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.AssemblyInfo.cs
-C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.csproj.CoreCompileInputs.cache
-C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\CoreWeb.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\staticwebassets\CoreWeb.StaticWebAssets.Manifest.cache
 C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\staticwebassets\CoreWeb.StaticWebAssets.xml
 C:\Users\user1\Documents\CoreWeb\CoreWeb\obj\Debug\net5.0\scopedcss\bundle\CoreWeb.styles.css

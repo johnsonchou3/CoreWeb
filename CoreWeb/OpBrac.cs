@@ -5,31 +5,25 @@ using System.Threading.Tasks;
 
 namespace CoreWeb
 {
-    /// <summary>
-    /// 數字的類別
-    /// </summary>
-    public class Number : Expression
+    public class OpBrac : Expression
     {
-        /// <summary>
-        /// 建構子
-        /// </summary>
-        /// <param name="value">本身的字串</param>
-        public Number(string value) : base(value)
+        public OpBrac(string value) : base(value)
         {
         }
 
         /// <summary>
-        /// 取得權重
+        /// 開括號的權重
         /// </summary>
-        /// <returns>權重為-1</returns>
+        /// <returns>權重為0</returns>
         public override int GetAssociativity()
         {
-            return -1;
+            return -2;
         }
         public override void ExpAction(Stack<Node> StackNodeTree, Stack<Node> StackNodeString)
         {
             Node t3 = new Node(this);
-            StackNodeTree.Push(t3);
+            StackNodeString.Push(t3);
         }
+
     }
 }
