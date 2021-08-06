@@ -26,6 +26,16 @@ namespace CoreWeb
         public bool IsAfterExecute { get; set; } = false;
 
         /// <summary>
+        /// 紀錄目前開括號數量
+        /// </summary>
+        public int BracketOpCount { get; set; } = 0;
+
+        /// <summary>
+        /// 紀錄目前關括號數量
+        /// </summary>
+        public int BracketCloseCount { get; set; } = 0;
+
+        /// <summary>
         /// 目前的運算式, 每按operation/bracket/execute 都會使其更新, 在execute/ClearAll後會清空
         /// </summary>
         public string StringOfOperation { get; set; }

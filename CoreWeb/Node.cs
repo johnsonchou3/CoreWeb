@@ -32,18 +32,18 @@ namespace CoreWeb
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="c">節點本身的值(operand/operator)</param>
-        public Node(Expression c)
+        /// <param name="expression">節點本身的值(operand/operator)</param>
+        public Node(Expression expression)
         {
-            Value = c.Value;
+            Value = expression.Value;
             Left = Right = null;
-            Associativity = c.GetAssociativity();
+            Associativity = expression.GetAssociativity();
         }
 
         /// <summary>
         /// 以expression list 創建Tree, 在一開始先以stack儲存數字及+-*/, 並在list 前後加上"()"以判斷式子是否結束
         /// 在遇到下一個operator 時, 透過dictionary 判斷要先以前者或後者作節點
-        /// 最後再回傳Tree的root, 也是StackNode的最上層(Peek)
+        /// 最後再回傳Tree的root, 也是StackNodeTree的最上層(Peek)
         /// </summary>
         /// <param name="Expressionlist">需要Btn的ExpressionList, iterate 每一個operand/operator</param>
         /// <returns></returns>
@@ -51,15 +51,15 @@ namespace CoreWeb
         {
             Stack<Node> StackNodeTree = new Stack<Node>();
             Stack<Node> StackNodeString = new Stack<Node>();
-            Node t;
+            Node treenode;
             Expressionlist.Insert(0, new OpBrac("("));
             Expressionlist.Add(new CloseBrac(")"));
             foreach (Expression exp in Expressionlist)
             {
                 exp.ExpAction(StackNodeTree, StackNodeString);
             }
-            t = StackNodeTree.Peek();
-            return t;
+            treenode = StackNodeTree.Peek();
+            return treenode;
         }
     }
 }

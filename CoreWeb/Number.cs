@@ -26,6 +26,12 @@ namespace CoreWeb
         {
             return -1;
         }
+
+        /// <summary>
+        /// 數字在建樹時該有的行為, createtree 時會呼叫
+        /// </summary>
+        /// <param name="StackNodeTree">存放樹的Stack</param>
+        /// <param name="StackNodeString">存放還不確定要拿來當children 還是parent 的node</param>
         public override void ExpAction(Stack<Node> StackNodeTree, Stack<Node> StackNodeString)
         {
             Node t3 = new Node(this);
