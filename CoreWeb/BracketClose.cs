@@ -8,13 +8,13 @@ namespace CoreWeb
     /// <summary>
     /// 關括號的類別
     /// </summary>
-    public class CloseBrac : Expression
+    public class BracketClose : Brackets
     {
         /// <summary>
         /// 建構子
         /// </summary>
         /// <param name="value">本身的字串</param>
-        public CloseBrac(string value) : base(value)
+        public BracketClose(string value = ")") : base(value)
         {
         }
 
@@ -32,11 +32,11 @@ namespace CoreWeb
         /// </summary>
         /// <param name="StackNodeTree">存放樹的Stack</param>
         /// <param name="StackNodeString">存放還不確定要拿來當children 還是parent 的node</param>
-        public override void ExpAction(Stack<Node> StackNodeTree, Stack<Node> StackNodeString)
+        public override void CreateTreeAction(Stack<Node> StackNodeTree, Stack<Node> StackNodeString)
         {
-            while (StackNodeString.Peek().Value != "(")
+            while (StackNodeString.Peek().Associativity != -2)
             {
-                //除非遇到"(", 不然通通做成樹!
+                //除非遇到權重-2 ["("], 不然通通做成樹!
                 Node t = StackNodeString.Peek();
                 StackNodeString.Pop();
                 Node t1 = StackNodeTree.Peek();
@@ -48,6 +48,23 @@ namespace CoreWeb
                 StackNodeTree.Push(t);
             }
             StackNodeString.Pop();
+        }
+
+        /// <summary>
+        /// 關括號的Post request, 加入關括號, 把目前的輸入字串存起來, 並把IsAfterBracket 改為True 讓Operation 及 Execute 作判斷以免出錯
+        /// </summary>
+        /// <param name="Caldata">Idkey 相應的caldata</param>
+        public override void CalDataActions(CalData Caldata)
+        {
+            if (Caldata.BracketOpCount > Caldata.BracketCloseCount)
+            {
+                Caldata.BracketCloseCount += 1;
+                Caldata.StringOfOperation += Caldata.TempInputString;
+                Caldata.Expressionlist.Add(new Number(Caldata.TempInputString));
+                base.CalDataActions(Caldata);
+                Caldata.TempInputString = "0";
+                Caldata.IsAfterBracket = true;
+            }
         }
     }
 }

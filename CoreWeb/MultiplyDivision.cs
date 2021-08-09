@@ -8,13 +8,13 @@ namespace CoreWeb
     /// <summary>
     /// 乘除的類別
     /// </summary>
-    public class MultDiv : Expression
+    public class MultiplyDivision : Operation
     {
         /// <summary>
         /// 建構子
         /// </summary>
         /// <param name="value">本身的字串</param>
-        public MultDiv(string value) : base(value)
+        public MultiplyDivision(string value) : base(value)
         {
         }
 
@@ -32,19 +32,20 @@ namespace CoreWeb
         /// </summary>
         /// <param name="StackNodeTree">存放樹的Stack</param>
         /// <param name="StackNodeString">存放還不確定要拿來當children 還是parent 的node</param>
-        public override void ExpAction(Stack<Node> StackNodeTree, Stack<Node> StackNodeString)
-        {
-            Node t3 = new Node(this);
-            while (StackNodeString.Peek().Value != "(" && StackNodeString.Peek().Associativity >= this.GetAssociativity())
-            {
-                Node t = StackNodeString.Pop();
-                Node t1 = StackNodeTree.Pop();
-                Node t2 = StackNodeTree.Pop();
-                t.Left = t2;
-                t.Right = t1;
-                StackNodeTree.Push(t);
-            }
-            StackNodeString.Push(t3);
-        }
+        //public void CreateTreeAction(Stack<Node> StackNodeTree, Stack<Node> StackNodeString)
+        //{
+        //    Node t3 = new Node(this);
+        //    while (StackNodeString.Peek().Associativity != -2 && StackNodeString.Peek().Associativity >= this.GetAssociativity())
+        //    {
+        //        Node t = StackNodeString.Pop();
+        //        Node t1 = StackNodeTree.Pop();
+        //        Node t2 = StackNodeTree.Pop();
+        //        t.Left = t2;
+        //        t.Right = t1;
+        //        StackNodeTree.Push(t);
+        //    }
+        //    StackNodeString.Push(t3);
+        //}
+        //*****************繼承 Operation 的
     }
 }

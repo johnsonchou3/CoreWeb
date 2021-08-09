@@ -52,11 +52,11 @@ namespace CoreWeb
             Stack<Node> StackNodeTree = new Stack<Node>();
             Stack<Node> StackNodeString = new Stack<Node>();
             Node treenode;
-            Expressionlist.Insert(0, new OpBrac("("));
-            Expressionlist.Add(new CloseBrac(")"));
+            Expressionlist.Insert(0, new BracketOpen());
+            Expressionlist.Add(new BracketClose());
             foreach (Expression exp in Expressionlist)
             {
-                exp.ExpAction(StackNodeTree, StackNodeString);
+                exp.CreateTreeAction(StackNodeTree, StackNodeString);
             }
             treenode = StackNodeTree.Peek();
             return treenode;

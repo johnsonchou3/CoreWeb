@@ -8,10 +8,10 @@ namespace CoreWeb
     /// <summary>
     /// 所有運算元/數字的抽象類別
     /// </summary>
-    public abstract class Expression
+    public abstract class Expression : AllActions
     {
         /// <summary>
-        /// 各自的字串
+        /// 每個expression 都會有各自的value: 0~9 +-*/()
         /// </summary>
         public string Value { get; set; }
 
@@ -35,6 +35,6 @@ namespace CoreWeb
         /// </summary>
         /// <param name="StackNodeTree">存放樹的Stack</param>
         /// <param name="StackNodeString">存放還不確定要拿來當children 還是parent 的node</param>
-        public abstract void ExpAction(Stack<Node> StackNodeTree, Stack<Node> StackNodeString);
+        public abstract void CreateTreeAction(Stack<Node> StackNodeTree, Stack<Node> StackNodeString);
     }
 }

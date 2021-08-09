@@ -53,17 +53,37 @@ namespace CoreWeb.Controllers
         /// <summary>
         /// Handle 所有post request的method, 會把url 裡的method btn 丟到controlleraction 裡轉換成行動再執行
         /// </summary>
-        /// <param name="method">url 裡的method 參數, 大小寫要跟controlleraction 裡長一模一樣</param>
-        /// <param name="btn">url 裡的btn 參數, 代表按鈕本身的值</param>
+        /// <param name="method">url 裡的method 參數</param>
+        /// <param name="button">url 裡的btn 參數, 代表按鈕本身的值</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult RouteActions([FromQuery] string method, string btn)
+        public IActionResult RouteActions([FromQuery] string method, string button)
         {
-            // method 沒東西的時候
             if (method == null)
             {
                 return BadRequest("Method name cannot be null!");
             }
+            method = method.ToLower();
+
+            //Dictionary<string, AllActions> ExpressionFactory = new Dictionary<string, AllActions>()
+            //    {
+            //        {"numpad" , new Number(btn)},
+            //        {"multiplydivision" , new MultiplyDivision(btn)},
+            //        {"addsubtract" , new AddSubtract(btn)},
+            //        {"execute" , new Execute()},
+            //        {"bracketclose" , new BracketClose(btn)},
+            //        {"bracketopen" , new BracketOpen(btn)},
+            //        {"root" , new Root()},
+            //        {"invert" , new Invert()},
+            //        {"positivenegative" , new PositiveNegative()},
+            //        {"clearentry" , new ClearEntry()},
+            //        {"clearall" , new ClearAll()},
+            //        {"backspace" , new Backspace()},
+            //        {"adddecimal" , new AddDecimal()},
+
+            //    };
+            ////method 沒東西的時候
+
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
             {
@@ -74,22 +94,19 @@ namespace CoreWeb.Controllers
             {
                 CalData caldata;
                 caldata = cache.GetOrCreate(Idkey, entry => new CalData());
-                Type type = typeof(ControllerActions);
-                MethodInfo CalAction = type.GetMethod(method);
-                //Catch null reference error of invalid function name
-                //But can't stop null method name
-                if (CalAction == null)
-                {
-                    return BadRequest("Request Error, you probably messed up the Method Name!");
-                }
                 try
                 {
-                    CalAction.Invoke(new ControllerActions(caldata, btn), null);
+                    AllActions currentaction = AllActionsFactory.CreateObject(method, button);
+                    currentaction.CalDataActions(caldata);
                     return Ok(caldata);
                 }
-                catch
+                catch (KeyNotFoundException)
                 {
-                    return BadRequest("Input Error, please clear all and try again");
+                    return BadRequest("You probably messed up the method name");
+                }
+                catch (Exception exception)
+                {
+                    return BadRequest(exception.Message);
                 }
             }
         }
