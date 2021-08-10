@@ -16,6 +16,10 @@ namespace CoreWeb
         /// <param name="value">本身的字串</param>
         public Number(string value) : base(value)
         {
+            if (!int.TryParse(value, out _))
+            {
+                throw new Exception("You gave a non number value!");
+            }
         }
 
         /// <summary>
@@ -62,6 +66,7 @@ namespace CoreWeb
             {
                 try
                 {
+                    // 防止替0加上0
                     if (Value == "0" && Caldata.TempInputString == "0")
                     {
                         return;
@@ -69,7 +74,7 @@ namespace CoreWeb
                     Caldata.TempInputString += Value;
                     if (Value != "0")
                     {
-                        // 以防 03 04 0005 等字出現
+                        // 以防 0X 出現
                         Caldata.TempInputString = double.Parse(Caldata.TempInputString).ToString();
                     }
                 }

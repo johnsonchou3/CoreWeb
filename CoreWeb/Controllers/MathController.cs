@@ -64,26 +64,6 @@ namespace CoreWeb.Controllers
                 return BadRequest("Method name cannot be null!");
             }
             method = method.ToLower();
-
-            //Dictionary<string, AllActions> ExpressionFactory = new Dictionary<string, AllActions>()
-            //    {
-            //        {"numpad" , new Number(btn)},
-            //        {"multiplydivision" , new MultiplyDivision(btn)},
-            //        {"addsubtract" , new AddSubtract(btn)},
-            //        {"execute" , new Execute()},
-            //        {"bracketclose" , new BracketClose(btn)},
-            //        {"bracketopen" , new BracketOpen(btn)},
-            //        {"root" , new Root()},
-            //        {"invert" , new Invert()},
-            //        {"positivenegative" , new PositiveNegative()},
-            //        {"clearentry" , new ClearEntry()},
-            //        {"clearall" , new ClearAll()},
-            //        {"backspace" , new Backspace()},
-            //        {"adddecimal" , new AddDecimal()},
-
-            //    };
-            ////method 沒東西的時候
-
             string Idkey = Request.Cookies["ID"];
             if (Idkey == null)
             {
