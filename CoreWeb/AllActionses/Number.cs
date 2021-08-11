@@ -16,10 +16,6 @@ namespace CoreWeb
         /// <param name="value">本身的字串</param>
         public Number(string value) : base(value)
         {
-            if (!int.TryParse(value, out _))
-            {
-                throw new Exception("You gave a non number value!");
-            }
         }
 
         /// <summary>

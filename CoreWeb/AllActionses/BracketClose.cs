@@ -36,7 +36,7 @@ namespace CoreWeb
         {
             while (StackNodeString.Peek().Associativity != -2)
             {
-                //除非遇到權重-2 ["("], 不然通通做成樹!
+                //除非遇到權重-2 ["("], 不然通通做成樹
                 Node t = StackNodeString.Peek();
                 StackNodeString.Pop();
                 Node t1 = StackNodeTree.Peek();

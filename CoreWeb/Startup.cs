@@ -25,6 +25,9 @@ namespace CoreWeb
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            int i = true ? 1 : 0;
+            int x = 1 + 2 + 3;
         }
 
         /// <summary>

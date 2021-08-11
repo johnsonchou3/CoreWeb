@@ -70,6 +70,7 @@ namespace CoreWeb.Controllers
                 Idkey = Guid.NewGuid().ToString();
             }
             Response.Cookies.Append("ID", Idkey);
+            //防止同個idkey 進入查詢
             lock (Lock)
             {
                 CalData caldata;
